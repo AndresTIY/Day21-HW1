@@ -1,0 +1,53 @@
+.header-card {
+  img {
+    width: 4rem;
+    vertical-align: middle;
+  }
+  text-align: center;
+  margin: 1rem auto;
+  width: 80%;
+  background: $color-header-bg;
+  border: 1px solid white;
+  border-radius: 1rem;
+}
+
+.main-card {
+  background: $color-header-bg;
+  margin: 2rem auto;
+  border: 1px solid white;
+  border-radius: 1rem;
+  width: 80%;
+  height: 30rem;
+}
+
+.user-card {
+  text-align: center;
+  margin: 10rem auto;
+}
+
+.chat-card {
+  #user-name-text {
+    display: inline-block;
+    margin-right: 1rem;
+  }
+
+  .chat-box {
+    background: #b6b6b6;
+    margin: 1rem auto;
+    width: 90%;
+    height: 20rem;
+    border-radius: 1rem;
+    padding: 1rem;
+
+  }
+  .user-area {
+    margin: 1rem auto;
+    width: 90%;
+    background: $color-copyright;
+    border-radius: 1rem;
+    padding: 1rem;
+
+
+  }
+
+}
