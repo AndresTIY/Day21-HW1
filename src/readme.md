@@ -30,3 +30,12 @@ DN: what?
 - Use tiny pizza server
 - setInterval() enables you to run a function repeatedly after a specified amount of time has passed, like refreshing messages on the page.
 - moment.js library for displaying dates/timestamps
+
+
+WHEN: enter user name and click enter
+WHAT: og card is no longer displayed, new card displayed
+- user name get's saved
+
+WHEN: user types in message and clicks submit
+WHAT: name: timestamp: message is displayed in chat box
+- this info needs to get sent to the server

@@ -57,7 +57,8 @@ var config = {
     new ExtractTextPlugin("styles.css"),
     new webpack.ProvidePlugin({
       $: 'jquery',
-      jQuery: 'jquery'
+      jQuery: 'jquery',
+      moment: 'moment'
     })
   ]
 
