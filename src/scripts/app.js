@@ -9,15 +9,14 @@ const $chatCard = $('.chat-card');
 const urlChat = 'http://tiny-za-server.herokuapp.com/collections/dres-chat';
 // console.log(sesh);
 
-//-----------------Moment Practice
+//-----------------Moment ------------------
 var moment = require('moment');
-var timeStamp = moment().format();
-// console.log(timeStamp); => 2017-03-28T13:19:43-05:00
 
 
 
 
-//-------------------Constructors
+
+//-------------------Constructors---------------
 function Session(){
 	this.username = name;
 };
@@ -29,7 +28,7 @@ function Message(timestamp, sender, body){
 	this.body = body;
 };
 const msg = new Message();
-//-------------------Prototypes
+//-------------------Prototypes---------------
 
 Message.prototype.save = function(){
 	//some code that saves message
@@ -41,7 +40,7 @@ Message.prototype.delete = function(){
 
 
 
-//-------------------Enter chat button click
+//-------------------Enter chat button click---------------
 $enterChat.on('click', function(e){
 
 	//hide user card
@@ -61,7 +60,7 @@ $enterChat.on('click', function(e){
 
 
 })
-//-----------------------------------------------------------
+//-----------------------------Input MSG into chat box-----------------------------
 
 const $chatBox = $('.chat-box')
 //click submit to send msg
@@ -73,18 +72,11 @@ const $inputMsg = $('#input-msg');
 // };
 
 $enterMsg.on('click', function(e){
-
+	const timeStamp = moment().format('M/D/YYYY, h:mm:ssa');
 	const $msg = $inputMsg.val();
-	// const pTag = $('<p>'+$msg+'</p>');
-	const uTag = $('<p>' + sesh.username + ' (' + timeStamp + '): ' + $msg + '<p>')
-
-	// $chatBox.append(pTag);
+	const uTag = `<p> ${sesh.username} (${timeStamp}): ${$msg}</p>`;
 	$chatBox.append(uTag);
-
-	//add approp syntaxUSER (TIMESTAMP): BODY syntax
-
 	console.log('enter message button works');
-
 })
 
 
