@@ -8,6 +8,8 @@ var $userCard = $('.user-card');
 const $chatCard = $('.chat-card');
 const urlChat = 'http://tiny-za-server.herokuapp.com/collections/dres-chat';
 // console.log(currentSession);
+const delBtn = '<button class="delete-one" type="button" name="button">X</button>';
+
 
 //-----------------Moment ------------------
 var moment = require('moment');
@@ -33,12 +35,18 @@ const messageC = new Message();
 
 Message.prototype.save = function(){
 	//some code that saves message
-}
+};
 
-Message.prototype.delete = function(){
-	//some code that deletes message
-}
+Message.prototype.delete = function(id){
+	$.ajax({
+		type: 'DELETE',
+		url: `${urlChat}/${id}`
+	});
+};
 
+$('#delete-one').on('click', function(e){
+	// Message.delete(current id)
+})
 
 
 //-------------------Enter chat button click---------------
@@ -64,18 +72,15 @@ $enterChat.on('click', function(e){
 //-----------------------------Input MSG into chat box-----------------------------
 
 const $chatBox = $('.chat-box')
-//click submit to send msg
 const $enterMsg = $('#enter-msg');
 const $inputMsg = $('#input-msg');
 
-// function addMsg (){
-// 	$('<p>test</p>')
-// };
 
 $enterMsg.on('click', function(e){
 	const timeStamp = moment().format('M/D/YYYY, h:mm:ssa');
 	const $msg = $inputMsg.val();
-	const uTag = `<p> ${currentSession.username} (${timeStamp}): ${$msg}</p>`;
+
+	const uTag = `<p> ${delBtn} ${currentSession.username} (${timeStamp}): ${$msg}</p>`;
 	$chatBox.append(uTag);
 	messageC.timestamp = timeStamp;
 	messageC.sender = currentSession.username;
@@ -109,15 +114,24 @@ var settings = {
 	dataType: 'json',
 	url: urlChat
 }
+//-----------Retrieves data from Server and appends to page--------------------
 
-$.ajax(settings).then(function(data, status, xhr){
-	data.forEach(function(item, i, arr){
-		const oldMsgs = `<p>${item.sender} (${item.time}): ${item.body}</p>`;
-		$chatBox.prepend(oldMsgs);
+const postAll = function () {
+	$.ajax(settings).then(function(data, status, xhr){
+		data.forEach(function(item, i, arr){
+			let oldMsgs = `<p>${delBtn} ${item.sender} (${item.time}): ${item.body} </p>`;
+			$chatBox.prepend(oldMsgs);
+		});
+	});
+}
 
-	})
-})
+postAll();
 
+// setInterval(postAll, 2000);
+
+
+
+//-------------------------Deletes All from Server-------------------------
 $('#delete-all').on('click', function(e){
 	$.ajax(settings).then(function(data, status, xhr){
 		data.forEach(function(item, i, arr){
@@ -129,6 +143,10 @@ $('#delete-all').on('click', function(e){
 			})
 		})
 	})
+})
+
+$('#delete-one').on('click', function(e){
+
 })
 
 
