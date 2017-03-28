@@ -10,9 +10,9 @@ const urlChat = 'http://tiny-za-server.herokuapp.com/collections/dres-chat';
 // console.log(sesh);
 
 //-----------------Moment Practice
-// var moment = require('moment');
-// var m = moment().format();
-// console.log(m); => 2017-03-28T13:19:43-05:00
+var moment = require('moment');
+var timeStamp = moment().format();
+// console.log(timeStamp); => 2017-03-28T13:19:43-05:00
 
 
 
@@ -75,11 +75,15 @@ const $inputMsg = $('#input-msg');
 $enterMsg.on('click', function(e){
 
 	const $msg = $inputMsg.val();
-	const pTag = '<p>'+$msg+'</p>';
-	// $chatBox.append(addMsg(msg));
-	$chatBox.append(pTag);
+	// const pTag = $('<p>'+$msg+'</p>');
+	const uTag = $('<p>' + sesh.username + ' (' + timeStamp + '): ' + $msg + '<p>')
 
-	console.log('y');
+	// $chatBox.append(pTag);
+	$chatBox.append(uTag);
+
+	//add approp syntaxUSER (TIMESTAMP): BODY syntax
+
+	console.log('enter message button works');
 
 })
 
