@@ -39,3 +39,10 @@ WHAT: og card is no longer displayed, new card displayed
 WHEN: user types in message and clicks submit
 WHAT: name: timestamp: message is displayed in chat box
 - this info needs to get sent to the server
+
+
+#### just typing out my thoughts
+- whenever we type in a new message and click submit, the message has to be added to the chat screen with
+USER (TIMESTAMP): BODY syntax
+  - could create a function that appends a <p> tag with 3 spans within
+  - 

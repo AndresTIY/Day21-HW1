@@ -6,9 +6,13 @@ export default function app() {
 var $enterChat = $('#enter-chat');
 var $userCard = $('.user-card');
 const $chatCard = $('.chat-card');
-const url = 'http://tiny-za-server.herokuapp.com/collections/dres-chat';
+const urlChat = 'http://tiny-za-server.herokuapp.com/collections/dres-chat';
 // console.log(sesh);
 
+//-----------------Moment Practice
+// var moment = require('moment');
+// var m = moment().format();
+// console.log(m); => 2017-03-28T13:19:43-05:00
 
 
 
@@ -25,7 +29,6 @@ function Message(timestamp, sender, body){
 	this.body = body;
 };
 const msg = new Message();
-
 //-------------------Prototypes
 
 Message.prototype.save = function(){
@@ -58,7 +61,54 @@ $enterChat.on('click', function(e){
 
 
 })
+//-----------------------------------------------------------
 
+const $chatBox = $('.chat-box')
+//click submit to send msg
+const $enterMsg = $('#enter-msg');
+const $inputMsg = $('#input-msg');
+
+// function addMsg (){
+// 	$('<p>test</p>')
+// };
+
+$enterMsg.on('click', function(e){
+
+	const $msg = $inputMsg.val();
+	const pTag = '<p>'+$msg+'</p>';
+	// $chatBox.append(addMsg(msg));
+	$chatBox.append(pTag);
+
+	console.log('y');
+
+})
+
+
+
+
+//--------------------SERVER STUFF
+var settings = {
+	type: 'GET',
+	dataType: 'json',
+	url: urlChat
+}
+$.ajax(settings);
+
+var settingsPost = {
+	type: 'POST',
+	contentType:'application/json',
+	url: urlChat,
+	data: JSON.stringify({
+		name: "name"
+	})
+}
+$.ajax(settingsPost);
+
+// function Message(timestamp, sender, body){
+// 	this.timestamp = timestamp;
+// 	this.sender = sender;
+// 	this.body = body;
+// };
 
 //what should message look like?
 //username (timestamp): message
@@ -109,3 +159,13 @@ $enterChat.on('click', function(e){
   // $.ajax(deleteSettings); works the same
 //   })
 // })
+
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//-----------------------------------------------------------
