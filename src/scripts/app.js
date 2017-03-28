@@ -7,7 +7,7 @@ var $enterChat = $('#enter-chat');
 var $userCard = $('.user-card');
 const $chatCard = $('.chat-card');
 const urlChat = 'http://tiny-za-server.herokuapp.com/collections/dres-chat';
-// console.log(sesh);
+// console.log(currentSession);
 
 //-----------------Moment ------------------
 var moment = require('moment');
@@ -20,14 +20,15 @@ var moment = require('moment');
 function Session(){
 	this.username = name;
 };
-const sesh = new Session();
+const currentSession = new Session();
 
 function Message(timestamp, sender, body){
 	this.timestamp = timestamp;
 	this.sender = sender;
 	this.body = body;
 };
-const msg = new Message();
+const messageC = new Message();
+
 //-------------------Prototypes---------------
 
 Message.prototype.save = function(){
@@ -48,14 +49,14 @@ $enterChat.on('click', function(e){
 
 	//saves username input
 
-	sesh.username = $('.username-input').val()
+	currentSession.username = $('.username-input').val()
 
 	//displays chat card
 	$chatCard.removeClass('hide');
 
 	//adds username to user area
-	$('#user-name-text').text(sesh.username)
-	console.log(sesh);
+	$('#user-name-text').text(currentSession.username)
+	console.log(currentSession)
 
 
 
@@ -74,9 +75,29 @@ const $inputMsg = $('#input-msg');
 $enterMsg.on('click', function(e){
 	const timeStamp = moment().format('M/D/YYYY, h:mm:ssa');
 	const $msg = $inputMsg.val();
-	const uTag = `<p> ${sesh.username} (${timeStamp}): ${$msg}</p>`;
+	const uTag = `<p> ${currentSession.username} (${timeStamp}): ${$msg}</p>`;
 	$chatBox.append(uTag);
+	messageC.timestamp = timeStamp;
+	messageC.sender = currentSession.username;
+	messageC.body = $msg;
 	console.log('enter message button works');
+	console.log(messageC);
+
+	//Post to server when clicked, should be place in click function
+	var postSettings = {
+		type: 'POST',
+		contentType:'application/json',
+		url: urlChat,
+		data: JSON.stringify({
+			time: timeStamp,
+			sender: currentSession.username,
+			body: $msg
+		})
+	}
+	$.ajax(postSettings);
+
+
+
 })
 
 
@@ -88,17 +109,72 @@ var settings = {
 	dataType: 'json',
 	url: urlChat
 }
-$.ajax(settings);
 
-var settingsPost = {
-	type: 'POST',
-	contentType:'application/json',
-	url: urlChat,
-	data: JSON.stringify({
-		name: "name"
+$.ajax(settings).then(function(data, status, xhr){
+	data.forEach(function(item, i, arr){
+		const oldMsgs = `<p>${item.sender} (${item.time}): ${item.body}</p>`;
+		$chatBox.prepend(oldMsgs);
+
 	})
-}
-$.ajax(settingsPost);
+})
+
+$('#delete-all').on('click', function(e){
+	$.ajax(settings).then(function(data, status, xhr){
+		data.forEach(function(item, i, arr){
+			const id = item._id;
+			const url = `${urlChat}/${id}`;
+			$.ajax({
+				type: 'DELETE',
+				url: url
+			})
+		})
+	})
+})
+
+
+// //Post to server when clicked, should be place in click function
+// var postSettings = {
+// 	type: 'POST',
+// 	contentType:'application/json',
+// 	url: urlChat,
+// 	data: JSON.stringify({
+// 		time:
+// 		sender:
+// 		body:
+//
+// 	})
+// }
+
+
+// $.ajax(settings).then(function(data, status, xhr){
+//   data.forEach(function(object, i, arr){
+//     // console.log(object.task);
+//     var delButton = '<button class="delete" type="button" name="button"><i class="fa fa-times-circle" aria-hidden="true"></i></button>';
+//     var taskInTag = '<li class="list-item">'+object.task+delButton+'</li>';
+//     $('.list').append(taskInTag)
+//   })
+// })
+
+
+// $('.save').on('click', function(e){
+//   var taskName = $('.input').val();
+//   var postSettings = {
+//     type: 'POST',
+//     contentType: 'application/json',
+//     url: urlZa,
+//     data: JSON.stringify ({
+//       task: taskName
+//     })
+//   }
+//   $.ajax(postSettings).then(function(data, status, xhr){
+//     var delButton = '<button class="delete" type="button" name="button"><i class="fa fa-times-circle" aria-hidden="true"></i></button>'
+//     var taskTag = '<li class="list-item">'+ data.task + delButton +'</li>'
+//
+//     $('.list').prepend(taskTag);
+//
+//   })
+//   $("input").trigger("reset");
+// });
 
 // function Message(timestamp, sender, body){
 // 	this.timestamp = timestamp;
