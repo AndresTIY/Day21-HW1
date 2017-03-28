@@ -9,6 +9,7 @@ const $chatCard = $('.chat-card');
 const urlChat = 'http://tiny-za-server.herokuapp.com/collections/dres-chat';
 // console.log(currentSession);
 const delBtn = '<button class="delete-one" type="button" name="button">X</button>';
+const $delOne = $('.delete-one');
 
 
 //-----------------Moment ------------------
@@ -47,7 +48,7 @@ Message.prototype.delete = function(id){
 $('#delete-one').on('click', function(e){
 	// Message.delete(current id)
 })
-
+//-------------------Hides Delete Buttons---------------
 
 //-------------------Enter chat button click---------------
 $enterChat.on('click', function(e){
@@ -66,9 +67,13 @@ $enterChat.on('click', function(e){
 	$('#user-name-text').text(currentSession.username)
 	console.log(currentSession)
 
+	//hide all delete buttons
 
+	postAll();
 
 })
+
+
 //-----------------------------Input MSG into chat box-----------------------------
 
 const $chatBox = $('.chat-box')
@@ -119,13 +124,23 @@ var settings = {
 const postAll = function () {
 	$.ajax(settings).then(function(data, status, xhr){
 		data.forEach(function(item, i, arr){
-			let oldMsgs = `<p>${delBtn} ${item.sender} (${item.time}): ${item.body} </p>`;
+			let oldMsgs = $(`<p class="p-base">${delBtn} ${item.sender} (${item.time}): ${item.body} </p>`);
 			$chatBox.prepend(oldMsgs);
+			if (currentSession.username !== item.sender) {
+			oldMsgs.find('.delete-one').addClass('hide');
+			console.log(oldMsgs);
+			oldMsgs.addClass('indent');
+			} else
+				if (currentSession.username === item.sender) {
+					oldMsgs.find(currentSession.username).removeClass('hide');
+					// oldMsgs.find('.p-base').removeClass('indent');
+
+				};
 		});
 	});
-}
+};
 
-postAll();
+// postAll();
 
 // setInterval(postAll, 2000);
 
