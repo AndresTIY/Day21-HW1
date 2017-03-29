@@ -7,7 +7,6 @@ var $enterChat = $('#enter-chat');
 var $userCard = $('.user-card');
 const $chatCard = $('.chat-card');
 const urlChat = 'http://tiny-za-server.herokuapp.com/collections/dres-chat';
-// console.log(currentSession);
 const delBtn = '<button class="delete-one" type="button" name="button">X</button>';
 const $delOne = $('.delete-one');
 
@@ -16,21 +15,19 @@ const $delOne = $('.delete-one');
 var moment = require('moment');
 
 
-
-
-
 //-------------------Constructors---------------
 function Session(){
 	this.username = name;
 };
 const currentSession = new Session();
 
-function Message(timestamp, sender, body){
+function Message(id, timestamp, sender, body){
+	this.id = id;
 	this.timestamp = timestamp;
 	this.sender = sender;
 	this.body = body;
 };
-const messageC = new Message();
+const messageConst = new Message();
 
 //-------------------Prototypes---------------
 
@@ -45,32 +42,26 @@ Message.prototype.delete = function(id){
 	});
 };
 
-$('#delete-one').on('click', function(e){
-	// Message.delete(current id)
+
+
+// 	console.log('delete button works');
+// })
+//-------------------Make Delete Button per Message---------------
+$('.chat-box').on('click', '.delete-one', function(e){
+
+	console.log('it clicks but won\'t delete');
+	console.log('but these buttons only show up when you are logged in under your user name!');
+
+
 })
-//-------------------Hides Delete Buttons---------------
 
 //-------------------Enter chat button click---------------
 $enterChat.on('click', function(e){
-
-	//hide user card
 	$userCard.addClass('hide');
-
-	//saves username input
-
 	currentSession.username = $('.username-input').val()
-
-	//displays chat card
 	$chatCard.removeClass('hide');
-
-	//adds username to user area
 	$('#user-name-text').text(currentSession.username)
-	console.log(currentSession)
-
-	//hide all delete buttons
-
 	postAll();
-
 })
 
 
@@ -80,20 +71,18 @@ const $chatBox = $('.chat-box')
 const $enterMsg = $('#enter-msg');
 const $inputMsg = $('#input-msg');
 
-
 $enterMsg.on('click', function(e){
 	const timeStamp = moment().format('M/D/YYYY, h:mm:ssa');
 	const $msg = $inputMsg.val();
-
 	const uTag = `<p> ${delBtn} ${currentSession.username} (${timeStamp}): ${$msg}</p>`;
 	$chatBox.append(uTag);
-	messageC.timestamp = timeStamp;
-	messageC.sender = currentSession.username;
-	messageC.body = $msg;
+	messageConst.timestamp = timeStamp;
+	messageConst.sender = currentSession.username;
+	messageConst.body = $msg;
+	// messageConst.id = $.ajax(postSettings).then(function(data, status, xhr){
+	// 	return data._id;
+	// })
 	console.log('enter message button works');
-	console.log(messageC);
-
-	//Post to server when clicked, should be place in click function
 	var postSettings = {
 		type: 'POST',
 		contentType:'application/json',
@@ -104,12 +93,10 @@ $enterMsg.on('click', function(e){
 			body: $msg
 		})
 	}
+
 	$.ajax(postSettings);
 
-
-
 })
-
 
 
 
@@ -128,19 +115,15 @@ const postAll = function () {
 			$chatBox.prepend(oldMsgs);
 			if (currentSession.username !== item.sender) {
 			oldMsgs.find('.delete-one').addClass('hide');
-			console.log(oldMsgs);
 			oldMsgs.addClass('indent');
 			} else
 				if (currentSession.username === item.sender) {
 					oldMsgs.find(currentSession.username).removeClass('hide');
-					// oldMsgs.find('.p-base').removeClass('indent');
-
 				};
 		});
 	});
 };
 
-// postAll();
 
 // setInterval(postAll, 2000);
 
@@ -150,8 +133,8 @@ const postAll = function () {
 $('#delete-all').on('click', function(e){
 	$.ajax(settings).then(function(data, status, xhr){
 		data.forEach(function(item, i, arr){
-			const id = item._id;
-			const url = `${urlChat}/${id}`;
+			let id = item._id;
+			let url = `${urlChat}/${id}`;
 			$.ajax({
 				type: 'DELETE',
 				url: url
@@ -160,9 +143,8 @@ $('#delete-all').on('click', function(e){
 	})
 })
 
-$('#delete-one').on('click', function(e){
 
-})
+
 
 
 // //Post to server when clicked, should be place in click function
